@@ -9,7 +9,7 @@ public class RandomizedSet {
 
         /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
         public boolean insert(int val) {
-                int 
+
         }
 
         /** Removes a value from the set. Returns true if the set contained the specified element. */
