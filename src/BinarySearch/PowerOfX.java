@@ -70,7 +70,7 @@ public class PowerOfX {
             res = res * x;
         return res;
     }
-}
+
 
 /*********FAST METHOD**********/
     /*The method is based on the observation that, for a positive integer n, we have
