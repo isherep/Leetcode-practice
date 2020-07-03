@@ -7,7 +7,7 @@ public class FindMinInRotatedArray {
         // find the start before rotation
         while(lo <= hi){
             int mid = (lo + hi)/2;
-            if(nums[lo] <= nums[mid] && nums[mid] <= nums[hi]){
+            if(nums[lo] <= nums[hi]){
                 // case - not rotated
                 return nums[lo];
                 // else rotated - find the point of rotation
