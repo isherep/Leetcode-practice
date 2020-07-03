@@ -115,4 +115,41 @@ public class SearchIn2DMatrix2 {
         }
         return false;
     }
+
+    /**********BEST WAY**********/
+    public boolean searchMatrixBEST(int[][] matrix, int target) {
+        // start our "pointer" in the bottom-left
+        int row = matrix.length-1;
+        int col = 0;
+
+        while (row >= 0 && col < matrix[0].length) {
+            if (matrix[row][col] > target) {
+                row--;
+            } else if (matrix[row][col] < target) {
+                col++;
+            } else { // found it
+                return true;
+            }
+        }
+
+        return false;
+    }
+    // same but start at top right corner
+    public boolean searchMatrixR(int[][] matrix, int target) {
+        if(matrix == null || matrix.length < 1 || matrix[0].length <1) {
+            return false;
+        }
+        int col = matrix[0].length-1;
+        int row = 0;
+        while(col >= 0 && row <= matrix.length-1) {
+            if(target == matrix[row][col]) {
+                return true;
+            } else if(target < matrix[row][col]) {
+                col--;
+            } else if(target > matrix[row][col]) {
+                row++;
+            }
+        }
+        return false;
+    }
 }
