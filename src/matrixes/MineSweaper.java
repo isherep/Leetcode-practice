@@ -29,6 +29,8 @@ public class MineSweaper {
                 updateBoard1(board, x + 1, y);
                 updateBoard1(board, x, y - 1);
                 updateBoard1(board, x, y + 1);
+                updateBoard1(board, x+1, y+1);
+                updateBoard1(board, x-1, y-1);
             }
             return board;
         }
