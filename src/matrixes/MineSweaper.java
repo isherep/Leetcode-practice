@@ -15,27 +15,24 @@ public class MineSweaper {
         // if number adjacent cell has a mine
         if (x >= 0 && y >= 0 && x < board.length && y < board[0].length && numOfAnjecent(board, x, y) > 0) {
             board[x][y] = (char) (numOfAnjecent(board, x, y) + '0');
-            //return board;
-            // stop recursion   30-38
         } else {
             if (x >= 0 && y >= 0 && x < board.length && y < board[0].length &&
                     board[x][y] != 'B'
-                // (
-                // board[x][y] <= 30 && board[x][y] >= 38)
             ) {
                 board[x][y] = 'B';
-                // recurse down top, left. right, up
+                // recurse down top, left. right, up and 4 diagonal directions
                 updateBoard1(board, x - 1, y);
                 updateBoard1(board, x + 1, y);
                 updateBoard1(board, x, y - 1);
                 updateBoard1(board, x, y + 1);
-                updateBoard1(board, x+1, y+1);
-                updateBoard1(board, x-1, y-1);
+                updateBoard1(board, x + 1, y + 1);
+                updateBoard1(board, x - 1, y - 1);
+                updateBoard1(board, x + 1, y - 1);
+                updateBoard1(board, x - 1, y + 1);
             }
-            return board;
+            // return board;
         }
         return board;
-
     }
 
     public int numOfAnjecent(char[][] board, int x, int y) {
