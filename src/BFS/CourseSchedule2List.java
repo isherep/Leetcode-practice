@@ -36,7 +36,7 @@ public class CourseSchedule2List {
             }
         }
 
-        if(count != numCourses){
+        if (count != numCourses) {
             System.out.println(count);
             return new int[]{};
         } else {
@@ -52,7 +52,7 @@ public class CourseSchedule2List {
         for (int[] arr : prerequisites) {
             int course = arr[0];
             // increment course indegrees
-            inDegree[course]+=1;
+            inDegree[course] += 1;
         }
 
         return inDegree;
@@ -70,7 +70,7 @@ public class CourseSchedule2List {
             // in case if no other courses depend on this course
             map.put(i, new LinkedList<>());
         }
-        for(int[] arr: prerequisites){
+        for (int[] arr : prerequisites) {
             int courseX = arr[1];
             int courseThatDependsOnX = arr[0];
             // get courses that depend on courseX
