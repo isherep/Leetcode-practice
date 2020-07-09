@@ -1,6 +1,5 @@
 package BFS;
 
-import javax.swing.tree.TreeNode;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,5 +26,11 @@ public class SymetricTree {
             q.add(right.left);
         }
         return true;
+    }
+
+    class TreeNode{
+        TreeNode val;
+        TreeNode left;
+        TreeNode right;
     }
 }
