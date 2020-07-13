@@ -21,74 +21,68 @@ import java.util.ArrayList;
 // Java program to print all paths with sum k.
 public class PathsWithGivenSum {
 
+    // binary tree node
+    static class Node {
+        int data;
+        Node left, right;
 
+        Node(int x) {
+            data = x;
+            left = right = null;
+        }
+    }
 
-        //utility function to print contents of
+    ;
+
+    //utility function to print contents of
 //a vector from index i to it's end
-        static void printVector( ArrayList<Integer> list, int i)
-        {
-            for (int j = i; j < list.size(); j++)
-                System.out.print( list.get(j) + " ");
-            System.out.println();
+    static void printPath(ArrayList<Integer> list, int i) {
+        for (int j = i; j < list.size(); j++)
+            System.out.print(list.get(j) + " ");
+        System.out.println();
+    }
+
+
+    static ArrayList<Integer> path = new ArrayList<Integer>();
+
+    // This function prints all paths that have sum k
+    static void printKPathUtil(Node root, int k) {
+        // when reached end of path - return, check path sum from end and print path
+        if (root == null)
+            return;
+        // add current node to the path
+        path.add(root.data);
+        // check if there's any k sum path
+        // in the left sub-tree.
+        printKPathUtil(root.left, k);
+
+        // check if there's any k sum path
+        // in the right sub-tree.
+        printKPathUtil(root.right, k);
+        // check if there's any k sum path that
+        // terminates at this node
+        // Traverse the entire path as
+        // there can be negative elements too
+        int curSum = 0;
+        for (int j = path.size() - 1; j >= 0; j--) {
+            curSum += path.get(j);
+
+            // If path sum is k, print the path
+            if (curSum == k)
+                printPath(path, j);
         }
 
-        // binary tree node
-        static class Node
-        {
-            int data;
-            Node left,right;
-            Node(int x)
-            {
-                data = x;
-                left = right = null;
-            }
-        };
-        static ArrayList<Integer> path = new ArrayList<Integer>();
+        // Remove the current element from the path
+        path.remove(path.size() - 1);
+    }
 
-        // This function prints all paths that have sum k
-        static void printKPathUtil(Node root, int k)
-        {
-            // empty node
-            if (root == null)
-                return;
+    // A wrapper over printKPathUtil()
+    static void printKPath(Node root, int k) {
+        path = new ArrayList<Integer>();
+        printKPathUtil(root, k);
+    }
 
-            // add current node to the path
-            path.add(root.data);
-
-            // check if there's any k sum path
-            // in the left sub-tree.
-            printKPathUtil(root.left, k);
-
-            // check if there's any k sum path
-            // in the right sub-tree.
-            printKPathUtil(root.right, k);
-
-            // check if there's any k sum path that
-            // terminates at this node
-            // Traverse the entire path as
-            // there can be negative elements too
-            int f = 0;
-            for (int j = path.size() - 1; j >= 0; j--)
-            {
-                f += path.get(j);
-
-                // If path sum is k, print the path
-                if (f == k)
-                    printVector(path, j);
-            }
-
-            // Remove the current element from the path
-            path.remove(path.size() - 1);
-        }
-
-        // A wrapper over printKPathUtil()
-        static void printKPath(Node root, int k)
-        {
-            path = new ArrayList<Integer>();
-            printKPathUtil(root, k);
-        }
-
-        public static void main(String[] args){
+    public static void main(String[] args) {
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(3);
         root.left.left = new TreeNode(2);
