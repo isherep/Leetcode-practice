@@ -3,6 +3,11 @@ package Trees;
 import java.util.LinkedList;
 import java.util.Queue;
 
+// https://www.geeksforgeeks.org/create-a-tree-in-level-order/
+//https://www.geeksforgeeks.org/construct-complete-binary-tree-given-array/
+// Assumption - Complete Tree Only
+// This method works for BST only if it is complete, but if it missing right or left nodes
+// will not work
 public class ConstructTreeFromLevelOrderArray {
 
     public static TreeNode construct(int[] arr) {
@@ -66,10 +71,13 @@ public class ConstructTreeFromLevelOrderArray {
     public static void main(String[] args) {
 
         int arr[] = {1, 2, 3, 4, 5, 6, 6, 6, 6};
-        int[] arr1 = {10,20,30,40,50,60};
-        TreeNode root = construct(arr);
+        int[] arr1 = {10, 20, 30, 40, 50, 60};
+        // root, root.left, root.right, next level nodes
+        int[] arrBST = {7, 4, 12, 3, 6, 8, 13, 1, 5, 10}; // 8 4 2 5 1 6 3 7
+        // {7, 4, 12, 3, 6, 8, 1, 5, 10}
+        TreeNode root = construct(arrBST);
         inOrder(root);
-       // assert value >= 20 : " Underweight";
+        // assert value >= 20 : " Underweight";
         // expected 6 4 6 2 5 1 6 3 6 
         //          6 4 6 2 5 1 6 3 6  
 
