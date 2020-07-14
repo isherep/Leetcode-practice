@@ -45,7 +45,7 @@ public class ConstructTreeFromLevelOrderArray {
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
 
-        for (int i = 0; i < arr.length - 2; i++) {
+        for (int i = 0; i < arr.length; i++) {
             //System.out.print(i + ", ");
             TreeNode cur = q.poll();
             // System.out.print(cur.data + ", ");
