@@ -4,21 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BSTIterator {
-    /**
-     * Definition for a binary tree node.
-     * public class TreeNode {
-     * int val;
-     * TreeNode left;
-     * TreeNode right;
-     * TreeNode() {}
-     * TreeNode(int val) { this.val = val; }
-     * TreeNode(int val, TreeNode left, TreeNode right) {
-     * this.val = val;
-     * this.left = left;
-     * this.right = right;
-     * }
-     * }
-     */
     private TreeNode root;
     private TreeNode cur;
     private boolean start;
@@ -37,29 +22,39 @@ public class BSTIterator {
     /**
      * @return the next smallest number
      */
-    // returns inorder successor
+    // returns inorder successor    
     public int next() {
         for (Map.Entry<TreeNode, TreeNode> e : parents.entrySet()) {
-            // System.out.println("child " + e.getKey().val + " parent " + e.getValue().val);
+            System.out.println("key " + e.getKey().val + " parent " + e.getValue().val);
         }
-        // case when it is first iteration - return start of inorder
+
+        // FIRST ITERATION - return start of inorder
         if (cur == root && start == true) {
             this.start = false;
             // return leftmoset - beginning of inorder traversal
             cur = leftMost(cur);
             return cur.val;
         } else {
-            System.out.print("cur " + cur.val);
-            // if there is left subtree -
+            System.out.println("cur " + cur.val);
+
+            //  IF NO RIGHT SUBTREE- go up to one of the ANCESTORS
             if (cur.right == null) {
+                // move current up untill cur != parents.get(cur).left
+                while (cur != parents.get(cur).left) { //parents.containsKey(cur)){
+                    System.out.println("parents.get(cur): " + parents.get(cur).val);
+                    cur = parents.get(cur);
+                }
+                System.out.println("parents.get(cur): " + parents.get(cur).val);
                 cur = parents.get(cur);
                 return cur.val;
+
+                // IF THE RIGHT SUBTREE PRESENT
             } else {
                 cur = leftMost(cur.right);
                 return cur.val;
             }
-
         }
+        //return cur.val;
     }
 
     /**
@@ -67,22 +62,36 @@ public class BSTIterator {
      */
     // no inorder succesor only when reached max - right leaf
     public boolean hasNext() {
-        if (root == null) return false;
-        if (root.left == null && root.right == null) return true;
-        TreeNode cur1 = this.cur;
-        TreeNode rl = rightestLeaf(root);
+        // check if it is a starting point
+        // check if it has a left subtree
+        if (root != null && this.cur == root && start == true) {
+            return true;
+        }
+        // check if it has a right subtree
+        else if (cur.right != null) {
+            // check for ancestors            
+            return true;
+        } else if (cur == rightestLeaf(root)) {
+            System.out.println("cur " + cur.val + "Rightest leaf " + rightestLeaf(root).val);
+            return false;
 
-        System.out.println(rl.val);
-        if (cur1 == rl) return false;
-        else return true;
-
+        } else {
+            if (parents.containsKey(cur)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        //return false;
     }
 
     public TreeNode leftMost(TreeNode node) {
-        parents.clear();
-
+        // parents.clear();
         while (node.left != null) {
             parents.put(node.left, node);
+            if (node.right != null) {
+                parents.put(node.right, node);
+            }
             node = node.left;
         }
         return node;
@@ -93,11 +102,4 @@ public class BSTIterator {
         return rightestLeaf(node.right);
     }
 }
-
-/**
- * Your BSTIterator object will be instantiated and called as such:
- * BSTIterator obj = new BSTIterator(root);
- * int param_1 = obj.next();
- * boolean param_2 = obj.hasNext();
- */
-}
+  
