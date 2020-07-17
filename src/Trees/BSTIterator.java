@@ -33,6 +33,7 @@ public class BSTIterator {
             this.start = false;
             // return leftmoset - beginning of inorder traversal
             cur = leftMost(cur);
+            
             return cur.val;
         } else {
             System.out.println("cur " + cur.val);
@@ -86,20 +87,40 @@ public class BSTIterator {
     }
 
     public TreeNode leftMost(TreeNode node) {
-        // parents.clear();
-        while (node.left != null) {
-            parents.put(node.left, node);
-            if (node.right != null) {
-                parents.put(node.right, node);
+        // parents.clear();     
+         while(node.left!= null){
+             parents.put(node.left, node);
+             System.out.println("node " + node.val);
+             if(node != null && node.right != null ){
+                 parents.put(node.right, node);
+             }
+              node = node.left;
+             //System.out.println("node " + node.val + ", node right " + node.right.val);
             }
-            node = node.left;
-        }
-        return node;
-    }
+            return node;
+            }
 
     public TreeNode rightestLeaf(TreeNode node) {
         if (node.right == null) return node;
         return rightestLeaf(node.right);
+    }
+    
+    public static void main(String[] args){
+    TreeNode root = new TreeNode(7);
+    root.left = new TreeNode(1);
+    root.left.right = new TreeNode(2);
+    root.right = new TreeNode(4);
+    
+    BSTIterator iterator = new BSTIterator(root);
+    
+    iterator.hasNext(); // true
+    iterator.next();    // return 1
+    
+    iterator.hasNext(); // return true
+    iterator.next();    // return 2
+    
+    iterator.hasNext(); // return true
+    iterator.next();
     }
 }
   
