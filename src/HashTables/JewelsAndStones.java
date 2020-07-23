@@ -47,5 +47,16 @@ public class JewelsAndStones {
         }
         return count;
     }
+    // best solution
+    // go over second string and check if it has index in first one
+    public int numJewelsInStonesZen(String J, String S) {
+        int res=0;
+        for(char c : S.toCharArray()){
+            if(J.indexOf(c) != -1){
+                res++;
+            }
+        }
+        return res;
+    }
 
 }
