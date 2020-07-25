@@ -40,6 +40,13 @@ import java.util.*;
     It is guaranteed that there is at least one user who visited at least 3 websites.
     No user visits two websites at the same time.
 
+
+    1. Sort all the entries using their timestamp as we need to consider that as well.
+    2. Now create a list of websites visited by particular User ( added based on timestamp order as all entries sorted in first step)
+    3. Now generate 3 websites sequence for that user and generate a set to we can avoid duplicate sequence.
+    4. Now calculate the frequency of each sequence
+    5. Get the most used sequence
+
  */
 public class AnalyzeUserWebsiteVisitPattern {
 
@@ -85,6 +92,7 @@ public class AnalyzeUserWebsiteVisitPattern {
         for (List<String> websitesList : userWebSitesMap.values()) {
             if (websitesList.size() < 3)
                 continue; // no need to consider less than 3 entries of web site visited by user
+            // set of all sequences of 3 that user visited
             Set<List<String>> sequencesSet = generate3Seq(websitesList);
             // Now update the frequency of the sequence ( increment by 1 for 1 user)
             for (List<String> seq : sequencesSet) {
@@ -95,11 +103,13 @@ public class AnalyzeUserWebsiteVisitPattern {
 
         List<String> res = new ArrayList<>();
         int MAX = 0;
+        // looping over map and selecting the one with max of users
         for (Map.Entry<List<String>, Integer> entry : seqUserFreMap.entrySet()) {
             if (entry.getValue() > MAX) {
                 MAX = entry.getValue();
                 res = entry.getKey();
             } else if (entry.getValue() == MAX) {
+                // if entry string is lexiografically smaller - select it
                 if (entry.getKey().toString().compareTo(res.toString()) < 0) {
                     res = entry.getKey();
                 }
@@ -109,11 +119,21 @@ public class AnalyzeUserWebsiteVisitPattern {
     }
 
     // It will not return duplicate seq for each user that why we are using Set
+    // the key here is to generate sequences and not combinations that's why need to
+    // use for loop and list, so it will keep the order of insertion
     private Set<List<String>> generate3Seq(List<String> websitesList) {
         Set<List<String>> setOfListSeq = new HashSet<>();
         for (int i = 0; i < websitesList.size(); i++) {
             for (int j = i + 1; j < websitesList.size(); j++) {
                 for (int k = j + 1; k < websitesList.size(); k++) {
+                    /*
+                        i 0 j 1 k 2
+                        i 0 j 1 k 2
+                        i 0 j 1 k 3
+                        i 0 j 2 k 3
+                        i 1 j 2 k 3
+                        i 0 j 1 k 2
+                     */
                     List<String> list = new ArrayList<>();
                     list.add(websitesList.get(i));
                     list.add(websitesList.get(j));
