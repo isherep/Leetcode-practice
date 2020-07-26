@@ -7,22 +7,7 @@ import java.util.Map;
 public class MostCommonNotBannedWord {
 
     public String mostCommonWord(String paragraph, String[] banned) {
-        // find the most common word in the paragraph
-        // check if it is not in banned
-        // if it is - retrieve the next common one
-        // retrieve the next common one untill find the one that is not in banned
 
-        // put pragraph into the the map word: frequency
-        // select the max from the map
-
-
-        // create a map of words that are not in banned words
-        // select the most frequent one from there
-
-        // First select all the words that only consists of letters, spaces, or the punctuation symbols !?',;.
-        //Words only consist of letters, never apostrophes or other punctuation symbols.
-        // 1. turn paragraph into the list words
-        // List<String> words = new LinkedList<>();
         String[] words = paragraph.split(" ");
         // endsWith(),
         char[] symbols = {',', '.', ';', '?', '.', '!', '\''};
