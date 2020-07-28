@@ -13,6 +13,7 @@ public class ValidateBSTTree {
         if (root == null) return true;
         if (min != null && root.val <= min) return false;
         if (max != null && root.val >= max) return false;
+        //             root      min    max               root       min       max
         return isBST(root.left, min, root.val) && isBST(root.right, root.val, max);
     }
 }
