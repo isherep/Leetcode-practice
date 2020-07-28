@@ -1,46 +1,56 @@
 package Graph;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class CriticalConnections {
 
-    public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+    public static List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
 
         // for each connection in the list - remove it from the list
         // check if graph becomes disconected
         List<List<Integer>> res = new LinkedList<>();
-
-        // for(int i = 0; i< connections.size(); i++){
-        //     // remove connection
-        //     List<List<Integer>> list = connections;
-        //     //boolean[] visited = new boolean[n];
-        //     List<Integer> curConnect = connections.get(i);
-        //     // instead of removing cur connection[2, 0] -
-        //      // remove 2 from 1 and 0 from 1
-        //     list.remove(curConnect);
-        //     // if(!conected(list, n)){
-        //     //     res.add(curConnect);
-        //     // }
-        //     boolean test = conected(list, n);
-        //     // put back the node
-        //     list.add(curConnect);
-        // }
-        boolean test = conected(connections, n);
+        for (int i = 0; i < connections.size(); i++) {
+            List<Integer> curConnect = connections.get(i);
+            connections.remove(curConnect);
+            //System.out.println("removed connection " + curConnect.get(0) + ", " + curConnect.get(1));
+            //print list of connections after removing one
+//             for (int j = 0; j < connections.size(); j++) {
+//                 System.out.print("[" + connections.get(j).get(0) + ", " + connections.get(j).get(1) + "]");
+//             }
+            //System.out.println();
+            // if the graph is not connected after removing this connectins
+            if (!conected(connections, n, curConnect.get(0))) {
+                res.add(curConnect);
+                //System.out.println(curConnect.get(0) + ", " + curConnect.get(1));
+                //connections.add(curConnect);
+            }
+            // put back the node at the same spot it was before
+            connections.add(i, curConnect);
+            for (int j = 0; j < connections.size(); j++) {
+                //System.out.print("[" + connections.get(j).get(0) + ", " + connections.get(j).get(1) + "]");
+            }
+        }
         return res;
     }
 
-    public boolean conected(List<List<Integer>> connections, int N) {
+    // CHECKS IF GRAPH IS CONNECTED
+    // IF DFS COVERS EACH NODE AFTER REMOVAL CONNECTION - IT IS CONNECTED
+    // IF DFS DOESN'T COVER SOME NODES
+    // REMOVE CONNECTION, CHECK IF THERE ARE UNVISITED NODES
+    public static boolean conected(List<List<Integer>> connections, int N, int removedNode) {
         // build graph
         boolean[] visited = new boolean[N];
         // build graph
         HashMap<Integer, List<Integer>> graph = buildGraph(N, connections);
         // perform DFS on graph
+        // SELECT SOME NODE
+        // instead of DFS on the whole graph - start with removed edge
         // for(Map.Entry<Integer,List<Integer>> e: graph.entrySet()){
-        //     DFS(e.getKey(), graph, visited);
-        // }
+        DFS(removedNode, graph, visited);
+        //}
         // count how many true you got in the boolean array
         // if it is < N - return false else return true;
         int count = 0;
@@ -51,11 +61,31 @@ public class CriticalConnections {
 
         //System.out.println("count " + count);
 
-        if (count < N - 1) return false;
+        if (count < N) return false;
         else return true;
     }
 
-    public HashMap<Integer, List<Integer>> buildGraph(int n, List<List<Integer>> connections) {
+    // count how many true you got in the boolean array
+    // if it is < N - return false else return true
+    public static void DFS(int node, Map<Integer, List<Integer>> graph, boolean[] visited) {
+
+        if (!visited[node]) {
+            visited[node] = true;
+            //System.out.println(node);
+            List<Integer> edges = graph.get(node);
+            //System.out.println("edges "+edges);
+            if (edges != null) {
+                // use dfs for each edge
+                for (int edge : edges) {
+                    // System.out.print(edge + ", ");
+                    //visited[edge] = true;
+                    DFS(edge, graph, visited);
+                }
+            }
+        }
+    }
+
+    public static HashMap<Integer, List<Integer>> buildGraph(int n, List<List<Integer>> connections) {
         HashMap<Integer, List<Integer>> graph = new HashMap<>();
 
         for (int i = 0; i < connections.size(); i++) {
@@ -71,7 +101,6 @@ public class CriticalConnections {
                 edges.add(cur.get(1));
                 graph.put(cur.get(0), edges);
             }
-
             // create a from --> to endge list
             /* create to -> from edge */
             if (graph.containsKey(cur.get(1))) {
@@ -82,53 +111,114 @@ public class CriticalConnections {
                 graph.put(cur.get(1), list);
             }
         }
-
-        printGraph(graph);
+        //printGraph(graph);
         return graph;
     }
 
-    public void printGraph(HashMap<Integer, List<Integer>> graph) {
+    public static void printGraph(HashMap<Integer, List<Integer>> graph) {
         // PRINT THE HASHMAP GRAPH
         for (Map.Entry<Integer, List<Integer>> e : graph.entrySet()) {
             System.out.print("key: " + e.getKey() + ": ");
             List edges = e.getValue();
             System.out.print(" edges: ");
             for (int i = 0; i < edges.size(); i++) {
-
                 System.out.print(edges.get(i) + ", ");
             }
             System.out.println();
         }
     }
 
-    // count how many true you got in the boolean array
-    // if it is < N - return false else return true
-    public static void DFS(int node, Map<Integer, List<Integer>> graph, boolean[] visited) {
-        //boolean[] visited= new boolean[4];
-        // if node was visited - return
-        // if(visited[node] = true){
-        //     return;
-        // }
-        // if node is not visited - visit it and it's edges
-        if (!visited[node]) {
-            visited[node] = true;
-            List<Integer> edges = graph.get(node);
-            //System.out.println("edges "+edges);
-            if (edges != null) {
-                for (int edge : edges) {
-                    System.out.print(edge + ", ");
-                    visited[edge] = true;
-                    DFS(edge, graph, visited);
-                }
+    public static List<List<Integer>> buildListFromArray(int[][] arr){
+        List<List<Integer>> res = new LinkedList<>();
+        for(int i = 0; i< arr.length; i++){
+            List<Integer> l = new LinkedList();
+            for(int j = 0; j< arr[i].length; j++){
+                l.add(arr[i][0]);
+                l.add(arr[i][1]);
             }
+            res.add(l);
         }
+
+        return res;
     }
+
+    public static List<List<Integer>> readFile(){
+        List<List<Integer>> connections = new LinkedList<>();
+        try {
+            BufferedReader in = new BufferedReader(new
+                    FileReader("/Users/user/Dropbox/Leetcode-practice/large_graph_connections.txt"));
+            String str;
+            while ((str = in.readLine())!= null) {
+                String[] ar = str.split("],");
+                //System.out.println(ar.length);
+                for(int i = 0; i<ar.length-1; i++){
+                    List<Integer> l = new LinkedList<>();
+                    String[] s = ar[i].trim().split("[^0-9]");
+                    //System.out.println()
+                    l.add(Integer.parseInt(s[1]));
+                    l.add(Integer.parseInt(s[2]));
+
+//                    for(int k= 0; k<s.length; k++){
+//                        System.out.println(s[k]);
+//                    }
+                    connections.add(l);
+                }
+                //System.out.print
+            }
+            in.close();
+        }
+        catch (IOException e) {
+            System.out.println("File Read Error");
+        }
+// print result list
+//        for(List<Integer> connection: connections){
+//            System.out.println("{" + connection.get(0) + ", " + connection.get(1) + "}");
+//        }
+        return connections;
+    }
+
 
     public static void main(String[] args) {
         System.out.println("test");
-        int[][] connections = {{0,1},{1,2},{2,0},{1,3}};
-        
 
+
+        List<List<Integer>> connections = new LinkedList<>();
+        Integer[] a1 = new Integer[]{0, 1};
+        Integer[] a2 = new Integer[]{1, 2};
+        Integer[] a3 = new Integer[]{2, 0};
+        Integer[] a4 = new Integer[]{1, 3};
+
+        List<Integer> l1 = Arrays.asList(a1);
+        List<Integer> l2 = Arrays.asList(a2);
+        List<Integer> l3 = Arrays.asList(a3);
+        List<Integer> l4 = Arrays.asList(a4);
+
+        connections.add(l1);
+        connections.add(l2);
+        connections.add(l3);
+        connections.add(l4);
+
+        List<List<Integer>> largeGraph = readFile();
+
+        HashMap<Integer, List<Integer>> graph = buildGraph(1000, largeGraph);
+        //printGraph(graph);
+        boolean[] visited = new boolean[1000];
+        DFS(0, graph, visited);
+        //System.out.println(conected(connections, 4));
+        List<List<Integer>> res = criticalConnections(1000, connections);
+
+        // print res list
+        System.out.println("res " + res);
+        for (int i = 0; i < res.size(); i++) {
+            System.out.print("[" + res.get(0).get(0) + ", " + res.get(0).get(1) + "]");
+        }
+        /*
+
+        1000
+        */
+
+
+       // readFile();
     }
 
 }
