@@ -29,9 +29,9 @@ public class CriticalConnections {
             }
             // put back the node at the same spot it was before
             connections.add(i, curConnect);
-            for (int j = 0; j < connections.size(); j++) {
-                //System.out.print("[" + connections.get(j).get(0) + ", " + connections.get(j).get(1) + "]");
-            }
+//            for (int j = 0; j < connections.size(); j++) {
+//                //System.out.print("[" + connections.get(j).get(0) + ", " + connections.get(j).get(1) + "]");
+//            }
         }
         return res;
     }
@@ -133,11 +133,13 @@ public class CriticalConnections {
         for(int i = 0; i< arr.length; i++){
             List<Integer> l = new LinkedList();
             for(int j = 0; j< arr[i].length; j++){
-                l.add(arr[i][0]);
-                l.add(arr[i][1]);
+                l.add(arr[i][j]);
+                //l.add(arr[i][1]);
             }
             res.add(l);
         }
+
+        System.out.println(res);
 
         return res;
     }
@@ -199,23 +201,39 @@ public class CriticalConnections {
         connections.add(l4);
 
         List<List<Integer>> largeGraph = readFile();
-
-        HashMap<Integer, List<Integer>> graph = buildGraph(1000, largeGraph);
-        //printGraph(graph);
+        List<List<Integer>> test5 = buildListFromArray(new int[][]{{0,1},{1,2},{2,0},{1,3},{3,4},{4,5},{5,3}});
+        List<List<Integer>> test6 = buildListFromArray(new int[][]{{0,1},{1,2},{3,10},{10,11},{2,0},{1,3},{3,4},{4,5},{5,3},{8,10},{3,11}});
         boolean[] visited = new boolean[1000];
-        DFS(0, graph, visited);
-        //System.out.println(conected(connections, 4));
-        List<List<Integer>> res = criticalConnections(1000, connections);
+
+        // correct - [1,3]
+        List<List<Integer>> res5 = criticalConnections(6, test5);
+        List<List<Integer>> res6 = criticalConnections(12, test6);
 
         // print res list
-        System.out.println("res " + res);
-        for (int i = 0; i < res.size(); i++) {
-            System.out.print("[" + res.get(0).get(0) + ", " + res.get(0).get(1) + "]");
-        }
+        System.out.println("res5 " + res5);
+        System.out.println("res6 " + res6);
+//        for (int i = 0; i < res6.size(); i++) {
+//            System.out.print("[" + res6.get(i).get(0) + ", " + res6.get(i).get(1) + "]");
+//        }
         /*
 
         1000
+        in the file - expected output is []
+
+        5
+        [[1,0],[2,0],[3,2],[4,2],[4,3],[3,0],[4,0]]
+
+        6
+         [[0,1],[1,2],[2,0],[1,3],[3,4],[4,5],[5,3]]
+
+         12
+        [[0,1],[1,2],[3,10],[10,11],[2,0],[1,3],[3,4],[4,5],[5,3],[8,10],[3,11]]
+        correct - [[10,8],[1,3]]
+
         */
+
+
+
 
 
        // readFile();
