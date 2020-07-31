@@ -2,8 +2,6 @@ package Graph;
 
 import java.util.*;
 
-import static Graph.CriticalConnections.readFile;
-
 public class Connections {
     public static List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
 
@@ -119,11 +117,11 @@ public class Connections {
     public static void main(String[] args){
 
 
-        List<List<Integer>> largeGraph = readFile();
-
-        List<List<Integer>> resLarge = criticalConnections(1001, largeGraph);
-
-        System.out.println(resLarge);
+//        List<List<Integer>> largeGraph = CriticalConnections.readFile();
+//
+//        List<List<Integer>> resLarge = criticalConnections(1001, largeGraph);
+//
+//        System.out.println(resLarge);
 
     }
 }
