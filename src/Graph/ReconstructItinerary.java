@@ -25,7 +25,7 @@ import java.util.*;
  * But it is larger in lexical order.
  */
 public class ReconstructItinerary {
-    public List<String> findItinerary(List<List<String>> tickets) {
+    public static List<String> findItinerary(List<List<String>> tickets) {
         Map<String, PriorityQueue<String>> flights = new HashMap<>();
         // build graph
         for (List<String> ticket : tickets) {
@@ -37,11 +37,18 @@ public class ReconstructItinerary {
         Stack<String> stack = new Stack<>();
         stack.push("JFK");
         while (!stack.empty()) {
-            while (flights.containsKey(stack.peek()) && !flights.get(stack.peek()).isEmpty())
-                stack.push(flights.get(stack.peek()).poll());
+            String cur = stack.peek();
+            // map contains cur and its adj list > 0
+            while (flights.containsKey(cur) && !flights.get(cur).isEmpty()) {
+                // System.out.println("peek " + cur);
+                stack.push(flights.get(cur).poll());
+                cur = stack.peek();
+            }
             path.addFirst(stack.pop());
         }
 
         return path;
     }
+
+
 }
