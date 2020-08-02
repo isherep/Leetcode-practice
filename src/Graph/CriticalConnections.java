@@ -11,6 +11,7 @@ public class CriticalConnections {
 //    int[] id;
     //int count;
 
+
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
 
         // for each connection in the list - remove it from the list
@@ -53,6 +54,8 @@ public class CriticalConnections {
         for (int v = 0; v < V; v++) {
             if (!marked[v]) {
                 dfsC(G, v, marked, id, count);
+                // for every time we find unmarked vertex after all other's were
+                // traversed - it means it is in a different component
                 count++;
             }
         }
