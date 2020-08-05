@@ -21,7 +21,12 @@ public class EvaluateExpressionList {
         return res;
     }
 
+    /*
 
+    Rejection case should be checked before accepting case.
+    Accepting case is (graph.get(u).containsKey(v)) rather than (u.equals(v)) for it takes O(1) but (u.equals(v)) takes O(n) for n is the length of the longer one between u and v.
+
+     */
     public double DFS(String vertex, String dest, HashMap<String, HashMap<String, Double>> graph, HashSet<String> seen) {
         //System.out.println("DFS " +  vertex + ", "+ dest);
         // Stack<Str
