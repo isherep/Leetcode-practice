@@ -92,8 +92,15 @@ public class CheapestFlightDijkstra {
             System.out.println("route\n" + route);
             System.out.println("cost\n" + cost);
 
-            // 
+            //
             while (!q.isEmpty()) {
+                String cur = q.poll();
+                // find the cur in cost and change it's value to what it is in the graph
+                if(cur.equals(source)){
+                    continue;
+                }
+
+                
 
             }
 
