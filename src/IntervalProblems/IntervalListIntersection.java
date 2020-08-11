@@ -13,11 +13,11 @@ public class IntervalListIntersection {
         LinkedList<int[]> resList = new LinkedList<>();
         int i = 0;
         int j = 0;
+        // edge case
         if (A == null || B == null) {
             return new int[][]{};
         }
-        // see which one is longer
-        int[][] longer = A.length >= B.length ? A : B;
+        // using two pointers to iterate over different arrrays
         while (i < A.length && j < B.length) {
             if (A[i][1] >= B[j][0] && A[i][0] <= B[j][0]) {
                 // find their intersection end
@@ -30,12 +30,13 @@ public class IntervalListIntersection {
             if (A[i][0] <= B[j][1] && A[i][0] > B[j][0]) {
                 int start = A[i][0];
                 // select which one ends faster
-                //System.out.println(B[j][1] + ", " + A[i][1]);
                 int end = B[j][1] <= A[i][1] ? B[j][1] : A[i][1];
                 resList.add(new int[]{start, end});
             }
+            // if A ends before B - move to next interval in A
             if (A[i][1] <= B[j][1]) {
                 i++;
+                // if B ends before A - move to next interval in B
             } else if (A[i][1] > B[j][1]) {
                 // do nothing, or increment j
                 j++;
