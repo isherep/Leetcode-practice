@@ -1,8 +1,6 @@
 package Company.Amazon;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Given a map Map<String, List<String>> userSongs with user names as keys and a list of all the songs that the user has listened to as values.
@@ -50,19 +48,79 @@ import java.util.List;
  * }
  */
 public class FavouriteGenres {
+    public static Map<String, List<String>> favouriteGenres(Map<String, List<String>> userSongs,
+                                                            Map<String, List<String>> songGenres) {
+        Map<String, List<String>> favourites = new HashMap<>();
+        // create a map sonts - genre
+        Map<String, String> songToGenre = new HashMap<>();
+        System.out.println(songGenres);
+        for (Map.Entry<String, List<String>> e : songGenres.entrySet()) {
+            // get each song
+            String genre = e.getKey();
+            List<String> songs = e.getValue();
+            for (String song : songs) {
+                songToGenre.put(song, e.getKey());
+            }
+        }
+        System.out.println("SongToGenre");
+        System.out.println(songToGenre);
+        for (String user : userSongs.keySet()) {
+            favourites.put(user, new LinkedList<String>());
+            System.out.println(user);
+            // get each user songs
+            // create new hashmap of counts for each user
+            HashMap<String, Integer> counts = new HashMap<>();
+            List<String> uSongs = userSongs.getOrDefault(user, new LinkedList<String>());
+            for (String song : uSongs) {
+                // find it's genre
+                String genre = songToGenre.get(song);
+                if (counts.containsKey(genre)) {
+                    counts.put(genre, counts.get(genre) + 1);
+                } else {
+                    counts.put(genre, 1);
+                }
+            }
+            // at this point every user song has a count
+            // find the max
+            int max = 0;
+            List favSongs = new LinkedList<>();
+            for (Map.Entry<String, Integer> e : counts.entrySet()) {
+                String gen = e.getKey();
+                int count = e.getValue();
+                if (count > max) {
+                    max = count;
+                }
+                // find other entries that have that max
+                // do not use else if, because you want the max already be incremented by now
+                // and compare agains new max from prev line
+                if (count == max && max != 0) {
+                    favSongs.add(gen);
+                }
+            }
+            favourites.put(user, favSongs);
+        }
 
-    // have a map - song to genre
-    // than for each song in user songs -
-    // count how many genres he listens
+        return favourites;
+    }
 
     public static void main(String[] args) {
+
+        // ********* TEST CASE #1 ********************
         HashMap<String, List<String>> userSongs1 = new HashMap<>();
         List<String> songsDavid = new LinkedList<>();
+        songsDavid.add("song5");
+        songsDavid.add("song6");
+
+
         songsDavid.add("song1");
         songsDavid.add("song2");
         songsDavid.add("song3");
         songsDavid.add("song4");
         songsDavid.add("song8");
+
+        // adding thind genre with freq 2
+//        songsDavid.add("song5");
+//        songsDavid.add("song6");
         List<String> songsEmma = new LinkedList<>();
         songsEmma.add("song5");
         songsEmma.add("song6");
@@ -89,10 +147,27 @@ public class FavouriteGenres {
 
         jazz.add("song8");
         jazz.add("song9");
+        songGenres.put("Rock", rock);
+        songGenres.put("Dubstep", dub);
+        songGenres.put("Techno", tech);
+        songGenres.put("Pop", pop);
+        songGenres.put("Jazz", jazz);
 
+        /******** TEST CASE 2 *********************/
         HashMap<String, List<String>> userSongs2 = new HashMap<>();
+        LinkedList<String> s1 = new LinkedList<>();
+        LinkedList<String> s2 = new LinkedList<>();
+        s1.add("song1");
+        s1.add("song2");
+        userSongs2.put("David", s1);
+        s2.add("song3");
+        s2.add("song4");
+        userSongs2.put("Emma", s2);
 
+        HashMap<String, List<String>> gens2Empty = new HashMap<>();
         HashMap<String, List<String>> userSongs3 = new HashMap<>();
+        //System.out.println(favouriteGenres(userSongs1, songGenres));
+        System.out.println(favouriteGenres(userSongs2, gens2Empty));
 
     }
 }
