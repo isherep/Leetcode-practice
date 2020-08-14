@@ -27,4 +27,19 @@ package Company.Amazon;
  *     0 ≤ k ≤ 26
  */
 public class SubstringsSizeKNoDupls {
+    /*
+
+    use two pointers
+    // move one by one up to 3.
+    // if there is no uplicates
+    // when the substring lent == 3 and it does not have duplicate
+    // advance j
+    // after len 3 - advance i and j
+
+    // maintain hash array and maintain counts and after advancing i -
+    // clear it up and start over.
+
+
+
+     */
 }
