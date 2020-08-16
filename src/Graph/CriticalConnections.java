@@ -19,15 +19,18 @@ public class CriticalConnections {
         List<List<Integer>> res = new LinkedList<>();
         // if the graph is not connected after removing this connectins
         HashMap<Integer, List<Integer>> graph = buildGraph(n, connections);
-        int curNumComp = CC(graph, graph.keySet().size(), 0);
+        int curNumComp = numOfConnectComponenets(graph, graph.keySet().size(), 0);
+
         for (int i = 0; i < connections.size(); i++) {
             List<Integer> curConnect = connections.get(i);
+            // remove current connection from the list of connections
             connections.remove(curConnect);
+            // decremenebt the size of connections
             n--;
             graph.get(curConnect.get(0)).remove(curConnect.get(1));
             graph.get(curConnect.get(1)).remove(curConnect.get(0));
             int count = 0;
-            int newNumber = CC(graph, n, count);
+            int newNumber = numOfConnectComponenets(graph, n, count);
             //  System.out.println("New Number of connect compo: " + curNumComp);
             if (newNumber > curNumComp) {
                 // System.out.println("New Number of connect compo: " + curNumComp);
@@ -46,7 +49,7 @@ public class CriticalConnections {
 
     //
 // counts number of connected components
-    public int CC(HashMap<Integer, List<Integer>> G, int N, int count) {
+    public int numOfConnectComponenets(HashMap<Integer, List<Integer>> G, int N, int count) {
         // number of vertices
         int V = G.keySet().size();
         boolean[] marked = new boolean[V];
