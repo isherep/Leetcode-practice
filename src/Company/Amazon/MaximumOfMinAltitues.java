@@ -1,8 +1,8 @@
 package Company.Amazon;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Given a matrix with r rows and c columns, find the maximum score of a path starting at [0, 0] and ending at [r-1, c-1]. The score of a path is the minimum value in that path. For example, the score of the path 8 → 4 → 5 → 9 is 4.
@@ -38,34 +38,54 @@ import java.util.List;
  * Return the max of that, so 4.
  */
 public class MaximumOfMinAltitues {
-    // private static int[][] matrix = new int[2][2];
-    private static List<List<Integer>> res;
+
+    private static List<PriorityQueue<Integer>> res;
+
     // find all path
-    // find the minimum value in each path
+    // find the minimum value in each path using heap
     // select the maximum value from each min
+    public static int maxScore(int[][] matrix) {
+        List<PriorityQueue<Integer>> routes = getAllPath(matrix);
+        int max = Integer.MIN_VALUE;
+        // don't include the first and final entry
+        for (PriorityQueue<Integer> path : routes) {
+            int cur = path.poll();
+            // System.out.println(cur);
+            if (cur > max) max = cur;
+        }
 
+        return max;
+    }
 
-    // put treemap - m
-    public static List<List<Integer>> getAllPath(int[][] matrix) {
+    public static List<PriorityQueue<Integer>> getAllPath(int[][] matrix) {
         res = new LinkedList<>();
         // create a first route and put top left element in it
         LinkedList<Integer> route = new LinkedList<>();
         route.add(matrix[0][0]);
-        // call recursive method to start generating paths down
+        // call recursive method to generate paths down
         generatePath(1, 0, route, matrix);
+        // and on the right
         generatePath(0, 1, route, matrix);
+
         return res;
     }
 
     public static void generatePath(int i, int j, List<Integer> path, int[][] matrix) {
-        // if beyong the  matrix - add to the res list
+        // add current element to the matrix
         path.add(matrix[i][j]);
-        // if matrix reachec the last row and column(right bottom corner )
-        // add the clone of path list to the result list, and return
-        // do not add path, because it will change, add a copy of it
+        // if matrix reaches the last row and column(right bottom corner )
+        // add the priority queue created based on the path list.
+        // it will keep the score of each path as the top element in the heap
         if (i == matrix.length - 1 && j == matrix[0].length - 1) {
-            // path.add(matrix[i][j]);
-            res.add(new ArrayList<>(path));
+            // do not include first and last element in the arrayList
+
+            PriorityQueue<Integer> q = new PriorityQueue<>();
+            for (int k = 1; k < path.size() - 1; k++) {
+                q.add(path.get(k));
+            }
+
+            //res.add(new PriorityQueue<>(path));
+            res.add(q);
             // backtrack one element
             path.remove(path.size() - 1);
             return;
@@ -78,6 +98,7 @@ public class MaximumOfMinAltitues {
         if (j < matrix[i].length - 1) {
             generatePath(i, j + 1, path, matrix);
         }
+        // remove last element
         path.remove(path.size() - 1);
     }
 
@@ -89,17 +110,20 @@ public class MaximumOfMinAltitues {
         System.out.println(getAllPath(matrix));
         System.out.println(getAllPath(matrix1)); // [1-> 2 -> 3 -> 1], [1-> 2 -> 5 -> 1], [1-> 4 -> 5 -> 1]
         System.out.println(getAllPath(matrix2));
-        List<List<Integer>> path = getAllPath(matrix2);
-
-        for (List<Integer> l : path) {
+        List<PriorityQueue<Integer>> path = getAllPath(matrix2);
+        // print all the paths
+        for (PriorityQueue<Integer> l : path) {
             System.out.println(l);
         }
+        System.out.println("max score: " + maxScore(matrix));
+        System.out.println("max score in 2: " + maxScore(matrix1));
+        System.out.println("max score in 3: " + maxScore(matrix2));
         // testing for error - if any elements got two times in the path
-        System.out.println("oversized ");
-        for (List<Integer> l : path) {
-            if (l.size() > 6) {
-                System.out.println(l);
-            }
-        }
+//        System.out.println("oversized ");
+//        for (PriorityQueue<Integer> l : path) {
+//            if (l.size() > 6) {
+//                System.out.println(l);
+//            }
+//        }
     }
 }
