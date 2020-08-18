@@ -40,7 +40,6 @@ import java.util.PriorityQueue;
 public class MaximumOfMinAltitues {
 
     private static List<PriorityQueue<Integer>> res;
-
     // find all path
     // find the minimum value in each path using heap
     // select the maximum value from each min
@@ -53,7 +52,6 @@ public class MaximumOfMinAltitues {
             // System.out.println(cur);
             if (cur > max) max = cur;
         }
-
         return max;
     }
 
@@ -66,7 +64,6 @@ public class MaximumOfMinAltitues {
         generatePath(1, 0, route, matrix);
         // and on the right
         generatePath(0, 1, route, matrix);
-
         return res;
     }
 
@@ -78,12 +75,10 @@ public class MaximumOfMinAltitues {
         // it will keep the score of each path as the top element in the heap
         if (i == matrix.length - 1 && j == matrix[0].length - 1) {
             // do not include first and last element in the arrayList
-
             PriorityQueue<Integer> q = new PriorityQueue<>();
             for (int k = 1; k < path.size() - 1; k++) {
                 q.add(path.get(k));
             }
-
             //res.add(new PriorityQueue<>(path));
             res.add(q);
             // backtrack one element
@@ -118,12 +113,6 @@ public class MaximumOfMinAltitues {
         System.out.println("max score: " + maxScore(matrix));
         System.out.println("max score in 2: " + maxScore(matrix1));
         System.out.println("max score in 3: " + maxScore(matrix2));
-        // testing for error - if any elements got two times in the path
-//        System.out.println("oversized ");
-//        for (PriorityQueue<Integer> l : path) {
-//            if (l.size() > 6) {
-//                System.out.println(l);
-//            }
-//        }
+
     }
 }
