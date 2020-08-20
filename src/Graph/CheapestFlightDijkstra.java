@@ -99,9 +99,6 @@ public class CheapestFlightDijkstra {
                 if(cur.equals(source)){
                     continue;
                 }
-
-                
-
             }
 
             return res;
