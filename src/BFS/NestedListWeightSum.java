@@ -64,13 +64,10 @@ public class NestedListWeightSum {
             // check if the element is an integer
             if (list.isInteger()) {
                 sum += list.getInteger() * level;
-                // map.put(list.getInteger(), level);
             } else {
                 q.add(list);
-                // level++;
             }
         }
-
         level++;
         // my queue loks like [1,1], [1,1]
         System.out.println(q.size());
@@ -80,29 +77,21 @@ public class NestedListWeightSum {
             while (i < size) {
                 NestedInteger cur = q.poll();
                 System.out.println(cur);
-                if (cur.isInteger()) {
-                    map.put(cur.getInteger(), level);  // level 2
-                } else {
-                    List<NestedInteger> inside = cur.getList();
-                    // check each element of the list :
-                    // add integers to map and lists to the queue
-                    for (NestedInteger list : inside) {
-                        if (list.isInteger()) {
-                            // instead of adding to the map - multiply
-                            sum += list.getInteger() * level;
-                            // map.put(list.getInteger(), level);
-                        } else {
-                            q.add(list);
-                        }
+                List<NestedInteger> inside = cur.getList();
+                // check each element of the list :
+                // add integers to map and lists to the queue
+                for (NestedInteger list : inside) {
+                    if (list.isInteger()) {
+                        // instead of adding to the map - multiply
+                        sum += list.getInteger() * level;
+                    } else {
+                        q.add(list);
                     }
                 }
                 i++;
             }
             level++;
         }
-        // for(Map.Entry<Integer, Integer> e: map.entrySet()){
-        //     sum += e.getKey() * e.getValue();
-        // }
         return sum;
     }
 }
