@@ -25,7 +25,7 @@ public class MoveZeros {
     // push all non zero numbers in the ancer pos
     // and increment the ancer
     // the rest will be left a 0 by Java's default
-    public void moveZeroesOptimal(int[] nums) {
+    public static void moveZeroesOptimal(int[] nums) {
         if (nums == null || nums.length < 1) return;
         // i - explorer
         int ancer = 0;
@@ -37,6 +37,10 @@ public class MoveZeros {
                 ancer++;
             }
         }
+    }
+
+    public static void main(String[] args) {
+        moveZeroesOptimal(new int[]{4, 0, 6, 0, 12, 1});
     }
 
 }

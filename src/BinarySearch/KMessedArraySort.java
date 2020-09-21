@@ -72,6 +72,16 @@ public class KMessedArraySort {
         return arr;
     }
 
+    /*
+        Time Complexity: building a heap takes O(K) time for K+1 elements.
+        Insertion into and extraction from the min-heap take O(log(K)), each.
+        Across all three loops, we do at least one of these actions N times, so the total time
+        complexity is O(N⋅log(K)). if K is substantially smaller than N,
+        then we can consider log(K) constant and argue that the complexity is practically linear.
+
+        Space Complexity: we need to a maintain min-heap of size K+1 throughout
+        the algorithm, so the auxiliary space complexity is O(K).
+     */
     public static int[] sortWithHeap(int[] arr, int k) {
         PriorityQueue<Integer> heap = new PriorityQueue<>();
 
